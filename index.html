@@ -3,212 +3,273 @@
 <head>
 <meta charset="UTF-8">
 <title>Hostel Management System</title>
+
 <style>
-body { font-family: Arial; text-align: center; background: #f2f2f2; margin: 0; }
-.header { background: linear-gradient(135deg, #1e3c72, #2a5298); color: white; padding: 20px; }
-.logo { width: 110px; height: 110px; border-radius: 50%; background: white; padding: 5px; object-fit: cover; }
-h1 { margin: 5px; }
-.container { display: flex; justify-content: center; gap: 20px; margin: 20px; flex-wrap: wrap; }
-.box { background: white; padding: 20px; width: 320px; border-radius: 12px; box-shadow: 0 0 15px rgba(0,0,0,0.2); }
-.box h2 { background: #1e3c72; color: white; padding: 10px; border-radius: 8px; margin-bottom: 15px; }
-input, select { width: 90%; padding: 8px; margin: 5px; border: 1px solid #ccc; border-radius: 5px; }
-button { width: 95%; padding: 10px; background: green; color: white; border: none; cursor: pointer; border-radius: 5px; font-size: 15px; margin-top: 5px; }
-button:hover { background: darkgreen; }
-.btn-delete { background: red; width: auto; padding: 5px 12px; font-size: 13px; }
-.btn-delete:hover { background: darkred; }
-.balance-box { background: #eaf4ff; border-radius: 8px; padding: 12px; margin: 8px 0; font-size: 18px; font-weight: bold; color: #1e3c72; border: 2px solid #1e3c72; }
-table { width: 95%; margin: auto; background: white; border-collapse: collapse; margin-bottom: 30px; }
-th, td { padding: 8px; border: 1px solid #ccc; font-size: 14px; }
-th { background: #2c3e50; color: white; }
-#toast { position: fixed; bottom: 30px; right: 30px; color: white; padding: 12px 22px; border-radius: 10px; font-weight: bold; display: none; z-index: 9999; }
+body{font-family:Arial;text-align:center;background:#f2f2f2;margin:0;}
+
+.header{
+  background:linear-gradient(135deg,#1e3c72,#2a5298);
+  color:white;padding:20px;
+}
+
+.logo{
+  width:110px;height:110px;border-radius:50%;
+  background:white;padding:5px;object-fit:cover;
+}
+
+.container{
+  display:flex;justify-content:center;gap:20px;
+  flex-wrap:wrap;margin:20px;
+}
+
+.box{
+  background:white;padding:20px;width:350px;
+  border-radius:12px;box-shadow:0 0 10px rgba(0,0,0,0.2);
+}
+
+input,select{
+  width:90%;padding:8px;margin:5px;
+  border:1px solid #ccc;border-radius:5px;
+}
+
+button{
+  width:95%;padding:10px;background:green;
+  color:white;border:none;cursor:pointer;
+  border-radius:5px;margin-top:5px;
+}
+
+table{
+  width:98%;margin:auto;background:white;
+  border-collapse:collapse;margin-bottom:30px;
+}
+
+th,td{
+  border:1px solid #ccc;padding:8px;text-align:center;
+}
+
+th{background:#1e3c72;color:white;}
+
+#toast{
+  position:fixed;bottom:20px;right:20px;
+  background:#333;color:white;padding:10px;
+  display:none;border-radius:8px;
+}
+
+.balance-box{
+  margin-top:10px;font-size:16px;
+  font-weight:bold;color:#1e3c72;
+}
+
+.btn-del{
+  background:red;color:white;border:none;
+  padding:5px 10px;border-radius:4px;
+}
 </style>
 </head>
+
 <body>
 
 <div class="header">
-    <img class="logo" src="SVCE LOGO.jpg ">
-    <h1>S.V. College of Engineering</h1>
-    <h2>Hostel Management System</h2>
+  <img class="logo" src="SVCE LOGO.jpg">
+  <h1>Hostel Management System</h1>
 </div>
 
 <div class="container">
 
 <!-- ADD STUDENT -->
 <div class="box">
-    <h2>🎓 Add Student</h2>
-    <input type="text" id="studentName" placeholder="Student Name">
-    <input type="text" id="roomNo" placeholder="Room No">
-    <input type="text" id="contactNo" placeholder="Contact No">
-    <input type="text" id="parentNo" placeholder="Parent No">
-    <input type="text" id="aadhaarNo" placeholder="Aadhaar No">
-    <select id="aadhaarStatus">
-        <option value="Not Collected">Aadhaar Collected?</option>
-        <option value="Collected">Collected</option>
-        <option value="Not Collected">Not Collected</option>
-    </select>
-    <button onclick="addStudent()">✅ Add Student</button>
+<h3>Add Student</h3>
+
+<input id="studentId" placeholder="Student ID">
+<input id="studentName" placeholder="Name">
+<input id="roomNo" placeholder="Room No">
+<input id="contactNo" placeholder="Contact No">
+<input id="parentNo" placeholder="Parent No">
+
+<input id="aadhaarNo" placeholder="Aadhaar No">
+
+<select id="aadhaarStatus">
+  <option value="Collected">Collected</option>
+  <option value="Not Collected">Not Collected</option>
+</select>
+
+<input id="totalFee" placeholder="Total Fee">
+<input id="paidFee" placeholder="Paid Fee">
+
+<button onclick="addStudent()">Add Student</button>
 </div>
 
-<!-- FEE MODULE -->
+<!-- CHECK / UPDATE -->
 <div class="box">
-    <h2>💰 Fee Module</h2>
-    <input type="text"   id="feeStudentId" placeholder="Student ID">
-    <input type="number" id="totalFee"     placeholder="Total Fee"    oninput="calcBalance()">
-    <input type="number" id="paidFee"      placeholder="Paid Amount"  oninput="calcBalance()">
-    <div class="balance-box">
-        💳 Balance: ₹<span id="balanceShow">0</span>
-    </div>
-    <button onclick="updateFee()">💾 Update Fee</button>
+<h3>Check / Update Fee</h3>
+
+<input id="checkId" placeholder="Enter Student ID" onkeyup="showBalance()">
+
+<div class="balance-box" id="balanceBox">
+Balance: ₹0
 </div>
+
+<input id="newBalance" placeholder="Enter New Paid Amount">
+<button onclick="updateBalance()">Update Fee</button>
 
 </div>
 
-<!-- TABLE -->
-<h2>📋 Student Records</h2>
-<table id="studentTable">
-<tr>
-    <th>#</th><th>ID</th><th>Name</th><th>Room</th><th>Contact</th>
-    <th>Parent</th><th>Aadhaar</th><th>Aadhaar Status</th>
-    <th>Total Fee</th><th>Paid</th><th>Balance</th>
-    <th>Status</th><th>Delete</th>
-</tr>
-</table>
+</div>
+
+<h2>Student Records</h2>
+<table id="table"></table>
 
 <div id="toast"></div>
 
 <script>
-const API = 'https://script.google.com/macros/s/AKfycbwpMJ0WBWjiBN7Zx-TKupdbfHqDZM-O4J0B6lVHclkszXtgqWQg7vDtGfIBljWou3b2/exec';
+
+const API = "YOUR_GOOGLE_SCRIPT_URL_HERE";
+
 let students = [];
 
-window.onload = function() { loadStudents(); };
+window.onload = loadStudents;
 
-// ── BALANCE AUTO CALC ─────────────────
-function calcBalance() {
-    const total = parseFloat(document.getElementById('totalFee').value) || 0;
-    const paid  = parseFloat(document.getElementById('paidFee').value)  || 0;
-    document.getElementById('balanceShow').textContent = total - paid;
+// LOAD
+function loadStudents(){
+  fetch(API)
+  .then(r=>r.json())
+  .then(data=>{
+    students = data;
+    render();
+  });
 }
 
-// ── LOAD ──────────────────────────────
-async function loadStudents() {
-    try {
-        const res = await fetch(API);
-        students = await res.json();
-        display();
-    } catch(e) { showToast('❌ Load failed!', 'red'); }
+// ADD STUDENT
+function addStudent(){
+
+  let data = {
+    action:"save",
+    id:studentId.value,
+    name:studentName.value,
+    room:roomNo.value,
+    contact:contactNo.value,
+    parent:parentNo.value,
+
+    aadhaar:aadhaarNo.value,
+    aadhaarStatus:aadhaarStatus.value,
+
+    totalFee:Number(totalFee.value)||0,
+    paid:Number(paidFee.value)||0,
+    balance:(Number(totalFee.value)||0)-(Number(paidFee.value)||0),
+    status:"PENDING"
+  };
+
+  fetch(API,{
+    method:"POST",
+    body:JSON.stringify(data)
+  });
+
+  show("Student Added");
+  setTimeout(loadStudents,1000);
 }
 
-// ── ADD STUDENT ───────────────────────
-async function addStudent() {
-    const name = document.getElementById("studentName").value;
-    if (!name) { showToast('⚠ Name கொடு!', 'orange'); return; }
-    const data = {
-        action:        'save',
-        name:          name,
-        room:          document.getElementById("roomNo").value,
-        contact:       document.getElementById("contactNo").value,
-        parent:        document.getElementById("parentNo").value,
-        aadhaar:       document.getElementById("aadhaarNo").value,
-        aadhaarStatus: document.getElementById("aadhaarStatus").value,
-        totalFee: 0, paid: 0, balance: 0, status: 'PENDING'
-    };
-    showToast('⏳ Saving...', 'blue');
-    try {
-        await fetch(API, { method: 'POST', body: JSON.stringify(data) });
-        showToast('✅ Student Added!', 'green');
-        clearStudentForm();
-        loadStudents();
-    } catch(e) { showToast('❌ Save failed!', 'red'); }
+// SHOW BALANCE
+function showBalance(){
+
+  let id = checkId.value;
+
+  let s = students.find(x=>String(x.id)==String(id));
+
+  if(s){
+    balanceBox.innerHTML =
+    `Name: ${s.name}<br>
+     Total: ₹${s.totalFee}<br>
+     Paid: ₹${s.paid}<br>
+     Balance: ₹${s.balance}`;
+  }else{
+    balanceBox.innerHTML="Student Not Found";
+  }
 }
 
-// ── UPDATE FEE ────────────────────────
-async function updateFee() {
-    const id    = document.getElementById('feeStudentId').value.trim();
-    const total = Number(document.getElementById('totalFee').value) || 0;
-    const paid  = Number(document.getElementById('paidFee').value)  || 0;
+// UPDATE FEE
+function updateBalance(){
 
-    if (!id)    { showToast('⚠ Student ID கொடு!', 'orange'); return; }
-    if (!total) { showToast('⚠ Total Fee கொடு!', 'orange');  return; }
+  let id = checkId.value;
+  let pay = Number(newBalance.value)||0;
 
-    const balance = total - paid;
-    const data = {
-        action:   'updateFee',
-        id:       id,
-        totalFee: total,
-        paid:     paid,
-        balance:  balance,
-        status:   balance <= 0 ? 'PAID' : 'PENDING'
-    };
-    showToast('⏳ Updating...', 'blue');
-    try {
-        await fetch(API, { method: 'POST', body: JSON.stringify(data) });
-        showToast('✅ Fee Updated!', 'green');
-        document.getElementById('feeStudentId').value = '';
-        document.getElementById('totalFee').value     = '';
-        document.getElementById('paidFee').value      = '';
-        document.getElementById('balanceShow').textContent = '0';
-        loadStudents();
-    } catch(e) { showToast('❌ Update failed!', 'red'); }
+  let s = students.find(x=>String(x.id)==String(id));
+
+  if(!s){ show("Student Not found"); return; }
+
+  let totalPaid = (Number(s.paid)||0) + pay;
+  let balance = (Number(s.totalFee)||0) - totalPaid;
+
+  let data = {
+    action:"updateFee",
+    id:id,
+    totalFee:Number(s.totalFee),
+    paid:totalPaid,
+    balance:balance,
+    status: balance<=0 ? "PAID":"PENDING"
+  };
+
+  fetch(API,{
+    method:"POST",
+    body:JSON.stringify(data)
+  });
+
+  show("Fee Updated");
+  setTimeout(loadStudents,1000);
 }
 
-// ── DELETE ────────────────────────────
-async function deleteStudent(id) {
-    if (!confirm('Delete பண்ணணுமா?')) return;
-    try {
-        await fetch(API, { method: 'POST', body: JSON.stringify({ action: 'delete', id: id }) });
-        showToast('🗑 Deleted!', 'green');
-        loadStudents();
-    } catch(e) { showToast('❌ Delete failed!', 'red'); }
+// DELETE
+function deleteStudent(id){
+
+  fetch(API,{
+    method:"POST",
+    body:JSON.stringify({action:"delete",id:id})
+  });
+
+  show("Deleted");
+  setTimeout(loadStudents,1000);
 }
 
-// ── DISPLAY TABLE ─────────────────────
-function display() {
-    const table = document.getElementById("studentTable");
-    table.innerHTML = `<tr>
-        <th>#</th><th>ID</th><th>Name</th><th>Room</th><th>Contact</th>
-        <th>Parent</th><th>Aadhaar</th><th>Aadhaar Status</th>
-        <th>Total Fee</th><th>Paid</th><th>Balance</th>
-        <th>Status</th><th>Delete</th>
-    </tr>`;
-    if (students.length === 0) {
-        table.innerHTML += `<tr><td colspan="13">No students yet!</td></tr>`;
-        return;
-    }
-    students.forEach((s, i) => {
-        const color = s.Status === 'PAID' ? 'green' : 'red';
-        table.innerHTML += `<tr>
-            <td>${i+1}</td>
-            <td>${s.ID||'-'}</td>
-            <td>${s.Name||'-'}</td>
-            <td>${s.Room||'-'}</td>
-            <td>${s.Contact||'-'}</td>
-            <td>${s.Parent||'-'}</td>
-            <td>${s.Aadhaar||'-'}</td>
-            <td>${s.AadhaarStatus||'-'}</td>
-            <td>₹${s.TotalFee||0}</td>
-            <td>₹${s.Paid||0}</td>
-            <td>₹${s.Balance||0}</td>
-            <td style="color:${color};font-weight:bold;">${s.Status||'-'}</td>
-            <td><button class="btn-delete" onclick="deleteStudent('${s.ID}')">🗑</button></td>
-        </tr>`;
-    });
+// TABLE
+function render(){
+
+  let t=document.getElementById("table");
+
+  t.innerHTML=`
+<tr>
+<th>ID</th><th>Name</th><th>Room</th>
+<th>Contact</th><th>Parent</th>
+<th>Aadhaar</th><th>Status</th>
+<th>Total</th><th>Paid</th><th>Balance</th>
+<th>Action</th>
+</tr>`;
+
+  students.forEach(s=>{
+
+    t.innerHTML+=`
+<tr>
+<td>${s.id}</td>
+<td>${s.name}</td>
+<td>${s.room}</td>
+<td>${s.contact}</td>
+<td>${s.parent}</td>
+<td>${s.aadhaar}</td>
+<td>${s.aadhaarStatus}</td>
+<td>${s.totalFee}</td>
+<td>${s.paid}</td>
+<td>${s.balance}</td>
+<td><button class="btn-del" onclick="deleteStudent('${s.id}')">Delete</button></td>
+</tr>`;
+  });
 }
 
-// ── CLEAR ─────────────────────────────
-function clearStudentForm() {
-    ['studentName','roomNo','contactNo','parentNo','aadhaarNo']
-    .forEach(id => { document.getElementById(id).value = ''; });
-    document.getElementById('aadhaarStatus').value = 'Not Collected';
+// TOAST
+function show(msg){
+  toast.innerText=msg;
+  toast.style.display="block";
+  setTimeout(()=>toast.style.display="none",2000);
 }
 
-// ── TOAST ─────────────────────────────
-function showToast(msg, color) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.style.background = color;
-    t.style.display = 'block';
-    setTimeout(() => { t.style.display = 'none'; }, 3000);
-}
 </script>
+
 </body>
 </html>
